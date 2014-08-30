@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="well">
-    <form role="form">
+    <form role="form" action="/review/{{ application.id }}/save" method="post">
       <div class="form-group">
         <label for="comments">Comments</label>
         <textarea class="form-control" rows="3" id="comments" name="comments"></textarea>

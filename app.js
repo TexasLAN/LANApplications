@@ -57,19 +57,23 @@ app.post('/save', function(req, res) {
     if (err)
       console.log(err);
   });
+
+  res.redirect('/');
 });
 
 app.post('/review/:id/save', function(req, res) {
-  var review = new Review({
+  Review.update({
     reviewer: req.session.reviewer,
-    application: req.params.id,
+    application: req.params.id
+  }, {
     comments: req.body.comments,
     weight: req.body.weight
-  });
-  review.save(function (err) {
+  }, { upsert: true }, function(err) {
     if (err)
       console.log(err);
   });
+
+  res.redirect('/review/' + req.params.id);
 });
 
 /* ===== VIEWS ===== */
