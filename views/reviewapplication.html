@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h1>{{ application.firstname }} {{ application.lastname }}</h1></div>
+    <div class="panel-body">
+      <table class="table">
+        <tr>
+          <th>Application ID</th>
+          <th>Gender</th>
+          <th>Email</th>
+        </tr>
+        <tr>
+          <td>{{ application.id }}</td>
+          <td>{{ application.gender }}</td>
+          <td>{{ application.email }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

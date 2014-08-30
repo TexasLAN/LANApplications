@@ -2,26 +2,35 @@
 
 {% block content %}
 <div class="container">
-  <form role="form">
-    <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputFile">File input</label>
-      <input type="file" id="exampleInputFile">
-      <p class="help-block">Example block-level help text here.</p>
-    </div>
-    <div class="checkbox">
-      <label>
-        <input type="checkbox"> Check me out
-      </label>
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-  </form>
+  <div class="jumbotron">
+    <h1>Lambda Alpha Nu</h1>
+    <p>Fall 2014 Rush Application</p>
+  </div>
+  <div class="well">
+    <form role="form" action="/save" method="post">
+      <div class="form-group">
+        <label for="fname">First name</label>
+        <input type="text" class="form-control" id="fname" name="fname" placeholder="First name">
+      </div>
+      <div class="form-group">
+        <label for="lname">Last name</label>
+        <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name">
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select class="form-control" id="gender" name="gender">
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other / Non-idetifying</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+      </div>
+      <span class="help-block">All fields are required</span>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
 </div>
 {% endblock %}

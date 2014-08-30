@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container panel panel-default">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Application ID</th>
+          <th>Review</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for application in applications %}
+        <tr>
+          <td><a href="/review/{{ application.id }}">{{ application.id }}</a></td>
+          <td>{{ application.gender }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}
