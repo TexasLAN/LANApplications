@@ -47,3 +47,4 @@ app.get('/admin', function(req, res) {
 
 /* ===== START THE SERVER ===== */
 server.listen(port);
+console.log('Node server started on port ' + port);
