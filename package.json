@@ -6,5 +6,8 @@
     "start": "node app"
   },
   "dependencies": {
+    "express": "*",
+    "mongoose": "*",
+    "swig": "*"
   }
 }

@@ -1,19 +1,15 @@
 /* ===== IMPORTS ===== */
 var express = require('express'),
   app = express(),
+  router = express.Router(),
   server = require('http').createServer(app),
+  swig = require('swig'),
   mongoose = require('mongoose');
 
-app.configure(function() {
-  app.use(express.static('public'));
-  app.use(express.cookieParser());
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'html');
-  app.use(express.bodyParser());
-  app.use(express.session({ secret: 'keyboard cat' }));
-  app.use(flash())
-  app.use(app.router);
-});
+app.engine('html', swig.renderFile);
+app.use(express.static('public'));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
 
 /* ===== GLOBALS ===== */
 var port = Number(process.env.PORT || 8000),
@@ -41,11 +37,11 @@ app.post('/save', function(res, req) {
 });
 
 /* ===== VIEWS ===== */
-app.get('/', function(res, req) {
+app.get('/', function(req, res) {
   res.render('application');
 });
 
-app.get('/admin', function(res, req) {
+app.get('/admin', function(req, res) {
 
 });
 
