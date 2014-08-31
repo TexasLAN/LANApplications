@@ -51,6 +51,7 @@ var Application = mongoose.model('Application', {
 
 var Review = mongoose.model('Review', {
   reviewer: String,
+  reviewerName: String,
   application: String,
   comments: String,
   weight: Number
@@ -94,6 +95,7 @@ app.post('/review/:id/save', function(req, res) {
     reviewer: req.session.reviewer,
     application: req.params.id
   }, {
+    reviewerName: req.session.reviewer.name,
     comments: req.body.comments,
     weight: req.body.weight
   }, { upsert: true }, function(err) {
