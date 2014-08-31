@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4 well">
+      <form action="/login" method="post">
+        <div class="form-group">
+          <label for="reviewer">Enter Unique Reviewer ID</label>
+          <input type="password" class="form-control" id="reviewer" name="reviewer" placeholder="Unique ID">
+        </div>
+        <input type="hidden" name="next" value="{{ next }}">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

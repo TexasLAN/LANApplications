@@ -4,6 +4,8 @@ var express = require('express'),
   router = express.Router(),
   server = require('http').createServer(app),
   bodyParser = require('body-parser'),
+  cookieParser = require('cookie-parser'),
+  session = require('express-session'),
   swig = require('swig'),
   mongoose = require('mongoose');
 
@@ -12,6 +14,12 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
+}));
+app.use(cookieParser());
+app.use(session({
+  secret: 'bananas',
+  resave: true,
+  saveUninitialized: true
 }));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
@@ -42,6 +50,11 @@ var Review = mongoose.model('Review', {
   application: String,
   comments: String,
   weight: Number
+});
+
+var Reviewer = mongoose.model('Reviewer', {
+  name: String,
+  isAdmin: Boolean
 });
 
 /* ===== ROUTES ===== */
@@ -76,34 +89,68 @@ app.post('/review/:id/save', function(req, res) {
   res.redirect('/review/' + req.params.id);
 });
 
+app.post('/login', function(req, res) {
+  Reviewer.findOne({ _id: req.body.reviewer }, function(err, reviewer) {
+    if (reviewer) {
+      req.session.reviewer = reviewer;
+      if (req.session.next) {
+        res.redirect(req.session.next);
+      } else {
+        res.redirect('/review');
+      }
+    } else {
+      res.redirect('/login');
+    }
+  });
+});
+
 /* ===== VIEWS ===== */
 app.get('/', function(req, res) {
   res.render('application');
 });
 
-app.get('/review', function(req, res) {
+app.get('/login', function(req,res) {
+  if (req.session.reviewer) {
+    res.redirect('/review');
+  }
+  res.render('authenticate', { next: req.body.next });
+});
+
+app.get('/review', ensureAuthenticated, function(req, res) {
   Application.find({}, function(err, applications) {
     res.render('reviewlist', { applications: applications });
   });
 });
 
-app.get('/review/:id', function(req, res) {
+app.get('/review/:id', ensureAuthenticated, function(req, res) {
   Application.findOne({ _id: req.params.id }, function(err, application) {
     res.render('reviewapplication', { application: application });
   });
 });
 
-app.get('/admin', function(req, res) {
+app.get('/admin', ensureAuthenticated, function(req, res) {
   Application.find({}, function(err, applications) {
     res.render('adminlist', { applications: applications });
   });
 });
 
-app.get('/admin/:id', function(req, res) {
+app.get('/admin/:id', ensureAuthenticated, function(req, res) {
   Application.findOne({ _id: req.params.id }, function(err, application) {
     res.render('adminapplication', { application: application });
   });
 });
+
+/* ===== HELPER FUNCTIONS ===== */
+function ensureAuthenticated(req, res, next) {
+  if (!req.session.reviewer) { 
+    req.session.next = req.url;
+    res.redirect('/login');
+  } else if (req.url === '/admin' && !req.session.reviewer.isAdmin) {
+    res.redirect('/review');
+  } else {
+    next();
+  }
+}
 
 /* ===== START THE SERVER ===== */
 server.listen(port);
