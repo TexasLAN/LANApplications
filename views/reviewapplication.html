@@ -11,37 +11,50 @@
     <form role="form" action="/review/{{ application.id }}/save" method="post">
       <div class="form-group">
         <label for="comments">Comments</label>
-        <textarea class="form-control" rows="3" id="comments" name="comments"></textarea>
+        <textarea class="form-control" rows="3" id="comments" name="comments">{{ myReview.comments }}</textarea>
       </div>
       <div class="form-group">
         <div class="radio">
           <label>
-            <input type="radio" name="weight" value="1"> Strong Reject
+            <input type="radio" name="weight" value="1" {% if myReview.weight ==  1 %} checked {% endif %}> Strong Reject
           </label> 
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="weight" value="2"> Weak Reject
+            <input type="radio" name="weight" value="2" {% if myReview.weight ==  2 %} checked {% endif %}> Weak Reject
           </label> 
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="weight" value="3"> Neutral
+            <input type="radio" name="weight" value="3" {% if myReview.weight ==  3 %} checked {% endif %}> Neutral
           </label> 
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="weight" value="4"> Weak Recruit
+            <input type="radio" name="weight" value="4" {% if myReview.weight ==  4 %} checked {% endif %}> Weak Recruit
           </label> 
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="weight" value="5"> Strong Recruit
+            <input type="radio" name="weight" value="5" {% if myReview.weight ==  5 %} checked {% endif %}> Strong Recruit
           </label> 
         </div>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
   </div>
+  {% if reviews.length > 0 %}
+    <div class="panel panel-default">
+    {% for review in reviews %}
+      <h3>Reviewer:</h3>
+      {{ review.reviewer }}
+      <h3>Comments:</h3>
+      {{ review.comments }}
+      <h3>Weight:</h3>
+      {{ review.weight }}
+      <hr>
+    {% endfor %}
+    </div>
+  {% endif %}
 </div>
 {% endblock %}

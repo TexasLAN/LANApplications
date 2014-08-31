@@ -113,7 +113,7 @@ app.get('/login', function(req,res) {
   if (req.session.reviewer) {
     res.redirect('/review');
   }
-  res.render('authenticate', { next: req.body.next });
+  res.render('authenticate');
 });
 
 app.get('/review', ensureAuthenticated, function(req, res) {
@@ -124,7 +124,22 @@ app.get('/review', ensureAuthenticated, function(req, res) {
 
 app.get('/review/:id', ensureAuthenticated, function(req, res) {
   Application.findOne({ _id: req.params.id }, function(err, application) {
-    res.render('reviewapplication', { application: application });
+    Review.find({ application: req.params.id }, function(err, reviews) {
+      var review = null;
+      reviews = reviews.filter(function(value) {
+        if (value.reviewer === req.session.reviewer._id) {
+          review = value;
+          return false;
+        } else {
+          return true;
+        }
+      });
+      res.render('reviewapplication', { 
+        application: application,
+        reviews: reviews,
+        myReview: review
+      });
+    });
   });
 });
 
