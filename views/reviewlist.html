@@ -9,6 +9,7 @@
           <th>Gender</th>
           <th>Year</th>
           <th># Reviews</th>
+          <th>Reviewed</th>
         </tr>
       </thead>
       <tbody>
@@ -18,6 +19,11 @@
           <td>{{ application.gender }}</td>
           <td>{{ application.year }}</td>
           <td>{{ application.reviewCount }}</td>
+          {% if application.reviewerIsMe %}
+            <td><span class="glyphicon glyphicon-ok" /></td>
+          {% else %}
+            <td><span class="glyphicon glyphicon-remove" /></td>
+          {% endif %}
         </tr>
       {% endfor %}
       </tbody>

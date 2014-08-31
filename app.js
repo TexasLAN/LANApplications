@@ -46,6 +46,7 @@ var Application = mongoose.model('Application', {
   email: String,
   year: String,
   reviewCount: Number, // used for the admin panels
+  reviewerIsMe: Boolean, // used for the admin panels
   question1: String
 });
 
@@ -145,9 +146,14 @@ app.get('/review', ensureAuthenticated, function(req, res) {
   Application.find({}, function(err, applications) {
     var completed = 0;
     applications.forEach(function(value, index) {
-      Review.count({ application: value._id }, function(err, count) {
-        value.reviewCount = count;
+      Review.find({ application: value._id }, function(err, reviews) {
+        value.reviewCount = reviews.length;
         completed++;
+        reviews.forEach(function(review) {
+          if (review.reviewer === req.session.reviewer._id) {
+            value.reviewerIsMe = true;
+          }
+        });
         if (completed === applications.length) {
           res.render('reviewlist', { applications: applications });
         }
