@@ -197,7 +197,6 @@ app.get('/admin', ensureAuthenticated, function(req, res) {
           reviews.forEach(function(review) {
             value.reviewAverage += review.weight;
           });
-          console.log(value.reviewAverage);
           value.reviewAverage /= reviews.length;
         } 
         completed++;
