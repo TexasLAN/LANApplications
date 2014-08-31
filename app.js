@@ -104,6 +104,7 @@ app.post('/review/:id/save', function(req, res) {
       console.log(err);
   });
 
+  req.flash('success', 'Review submitted successfully');
   res.redirect('/review/' + req.params.id);
 });
 
@@ -175,6 +176,7 @@ app.get('/review/:id', ensureAuthenticated, function(req, res) {
         }
       });
       res.render('reviewapplication', { 
+        success: req.flash('success'),
         application: application,
         reviews: reviews,
         myReview: review
