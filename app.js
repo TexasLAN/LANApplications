@@ -146,10 +146,6 @@ app.get('/', function(req, res) {
   });
 });
 
-app.get('/success', function(req, res) {
-  res.render('success');
-});
-
 app.get('/login', function(req,res) {
   if (req.session.reviewer) {
     res.redirect('/review');
