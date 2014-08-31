@@ -1,4 +1,5 @@
 body {
   background: url('http://texaslan.org/img/bg.png');
+  background-attachment: fixed;
   margin-top: 42px;
 }
