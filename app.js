@@ -113,6 +113,7 @@ app.get('/', function(req, res) {
 app.get('/login', function(req,res) {
   if (req.session.reviewer) {
     res.redirect('/review');
+    return;
   }
   res.render('authenticate');
 });
