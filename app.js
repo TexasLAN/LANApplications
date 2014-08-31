@@ -6,6 +6,7 @@ var express = require('express'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
   session = require('express-session'),
+  flash = require('connect-flash'),
   swig = require('swig'),
   mongoose = require('mongoose');
 
@@ -21,6 +22,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+app.use(flash());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
 
@@ -61,6 +63,12 @@ var Reviewer = mongoose.model('Reviewer', {
 
 /* ===== ROUTES ===== */
 app.post('/save', function(req, res) {
+  if (!req.body.fname || !req.body.lname || !req.body.gender ||
+      !req.body.email || !req.body.year || !req.body.q1) {
+    req.flash('error', 'A required field was missing');
+    res.redirect('/');
+    return;
+  }
   var application = new Application({
     firstname: req.body.fname,
     lastname: req.body.lname,
@@ -70,10 +78,14 @@ app.post('/save', function(req, res) {
     question1: req.body.q1
   });
   application.save(function (err) {
-    if (err)
+    if (err) {
       console.log(err);
+      req.flash('error', 'There was an error saving your application');
+      res.redirect('/');
+      return;
+    }
   });
-
+  req.flash('success', 'Application Submitted Successfully!');
   res.redirect('/');
 });
 
@@ -109,7 +121,14 @@ app.post('/login', function(req, res) {
 
 /* ===== VIEWS ===== */
 app.get('/', function(req, res) {
-  res.render('application');
+  res.render('application', {
+    success: req.flash('success'),
+    error: req.flash('error')
+  });
+});
+
+app.get('/success', function(req, res) {
+  res.render('success');
 });
 
 app.get('/login', function(req,res) {

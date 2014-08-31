@@ -6,8 +6,14 @@
     <h1>Lambda Alpha Nu</h1>
     <p>Fall 2014 Rush Application</p>
   </div>
+  {% if success.length > 0 %}
+    <div class="alert alert-success" role="alert">{{ success }}</div>
+  {% endif %}
+  {% if error.length > 0 %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endif %}
   <div class="well">
-    <form role="form" action="/save" method="post">
+    <form role="form" data-persist="garlic" action="/save" method="post">
       <div class="form-group">
         <label for="fname">First name</label>
         <input type="text" class="form-control" id="fname" name="fname" placeholder="First name">
@@ -37,6 +43,10 @@
       <div class="form-group">
         <label for="email">Email address</label>
         <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="q1">Question 1</label>
+        <textarea class="form-control" rows="3" id="q1" name="q1"></textarea>
       </div>
       <span class="help-block">All fields are required</span>
       <button type="submit" class="btn btn-default">Submit</button>
