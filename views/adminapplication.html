@@ -9,14 +9,18 @@
         <tr>
           <th>Application ID</th>
           <th>Gender</th>
+          <th>Year</th>
           <th>Email</th>
         </tr>
         <tr>
           <td>{{ application.id }}</td>
           <td>{{ application.gender }}</td>
+          <td>{{ application.year }}</td>
           <td>{{ application.email }}</td>
         </tr>
       </table>
+      <h3>Question 1</h3>
+      <p>{{ application.question1 }}</p>
     </div>
   </div>
 </div>
