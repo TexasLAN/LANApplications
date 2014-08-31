@@ -47,6 +47,7 @@ var Application = mongoose.model('Application', {
   year: String,
   reviewCount: Number, // used for the admin panels
   reviewerIsMe: Boolean, // used for the admin panels
+  reviewAverage: Number, // used for the admin panels
   question1: String
 });
 
@@ -189,8 +190,16 @@ app.get('/admin', ensureAuthenticated, function(req, res) {
   Application.find({}, function(err, applications) {
     var completed = 0;
     applications.forEach(function(value, index) {
-      Review.count({ application: value._id }, function(err, count) {
-        value.reviewCount = count;
+      Review.find({ application: value._id }, function(err, reviews) {
+        value.reviewCount = reviews.length;
+        if (reviews.length > 0) {
+          value.reviewAverage = 0;
+          reviews.forEach(function(review) {
+            value.reviewAverage += review.weight;
+          });
+          console.log(value.reviewAverage);
+          value.reviewAverage /= reviews.length;
+        } 
         completed++;
         if (completed === applications.length) {
           res.render('adminlist', { applications: applications });
