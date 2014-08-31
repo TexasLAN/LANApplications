@@ -42,6 +42,7 @@ var Application = mongoose.model('Application', {
   lastname: String,
   gender: String,
   email: String,
+  year: String,
   reviewCount: Number, // used for the admin panels
   question1: String
 });
@@ -65,6 +66,7 @@ app.post('/save', function(req, res) {
     lastname: req.body.lname,
     gender: req.body.gender,
     email: req.body.email,
+    year: req.body.year,
     question1: req.body.q1
   });
   application.save(function (err) {

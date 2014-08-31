@@ -7,6 +7,7 @@
         <tr>
           <th>Application ID</th>
           <th>Review</th>
+          <th>Year</th>
           <th># Reviews</th>
         </tr>
       </thead>
@@ -15,6 +16,7 @@
         <tr>
           <td><a href="/review/{{ application.id }}">{{ application.id }}</a></td>
           <td>{{ application.gender }}</td>
+          <td>{{ application.year }}</td>
           <td>{{ application.reviewCount }}</td>
         </tr>
       {% endfor %}
