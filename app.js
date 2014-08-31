@@ -92,7 +92,7 @@ app.post('/save', function(req, res) {
   res.redirect('/');
 });
 
-app.post('/review/:id/save', function(req, res) {
+app.post('/review/:id/save', ensureAuthenticated, function(req, res) {
   Review.update({
     reviewer: req.session.reviewer,
     application: req.params.id
@@ -122,6 +122,20 @@ app.post('/login', function(req, res) {
       res.redirect('/login');
     }
   });
+});
+
+app.delete('/:id', ensureAdmin, function(req, res) {
+  Application.remove({ _id: req.params.id }, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+  Review.remove({ application: req.params.id }, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+  res.end('{"success" : "Deleted Successfully", "status" : 200}');
 });
 
 /* ===== VIEWS ===== */
@@ -186,7 +200,7 @@ app.get('/review/:id', ensureAuthenticated, function(req, res) {
   });
 });
 
-app.get('/admin', ensureAuthenticated, function(req, res) {
+app.get('/admin', ensureAdmin, function(req, res) {
   Application.find({}, function(err, applications) {
     var completed = 0;
     applications.forEach(function(value, index) {
@@ -208,9 +222,23 @@ app.get('/admin', ensureAuthenticated, function(req, res) {
   });
 });
 
-app.get('/admin/:id', ensureAuthenticated, function(req, res) {
+app.get('/admin/:id', ensureAdmin, function(req, res) {
   Application.findOne({ _id: req.params.id }, function(err, application) {
-    res.render('adminapplication', { application: application });
+    if (!application) {
+      res.redirect('/admin');
+      return;
+    }
+    Review.find({ application: application._id }, function(err, reviews) {
+      if (reviews.length > 0) {
+        application.reviewAverage = 0;
+        reviews.forEach(function(review) {
+          application.reviewAverage += review.weight;
+        });
+        application.reviewAverage /= reviews.length;
+      }
+      console.log(application);
+      res.render('adminapplication', { application: application });
+    });
   });
 });
 
@@ -219,7 +247,16 @@ function ensureAuthenticated(req, res, next) {
   if (!req.session.reviewer) { 
     req.session.next = req.url;
     res.redirect('/login');
-  } else if (req.url === '/admin' && !req.session.reviewer.isAdmin) {
+  } else {
+    next();
+  }
+}
+
+function ensureAdmin(req, res, next) {
+  if (!req.session.reviewer) {
+    req.session.next = req.url;
+    res.redirect('/login');
+  } else if (!req.session.reviewer.isAdmin) {
     res.redirect('/review');
   } else {
     next();
