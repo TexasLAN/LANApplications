@@ -160,6 +160,11 @@ app.get('/login', function(req,res) {
 
 app.get('/review', ensureAuthenticated, function(req, res) {
   Application.find({}, function(err, applications) {
+    if (applications.length === 0) {
+      req.flash('error', 'No applications currently exist');
+      res.redirect('/');
+      return;
+    }
     var completed = 0;
     applications.forEach(function(value, index) {
       Review.find({ application: value._id }, function(err, reviews) {
@@ -180,6 +185,10 @@ app.get('/review', ensureAuthenticated, function(req, res) {
 
 app.get('/review/:id', ensureAuthenticated, function(req, res) {
   Application.findOne({ _id: req.params.id }, function(err, application) {
+    if (!application) {
+      res.redirect('/review');
+      return;
+    }
     Review.find({ application: req.params.id }, function(err, reviews) {
       var review = null;
       reviews = reviews.filter(function(value) {
@@ -202,6 +211,11 @@ app.get('/review/:id', ensureAuthenticated, function(req, res) {
 
 app.get('/admin', ensureAdmin, function(req, res) {
   Application.find({}, function(err, applications) {
+    if (applications.length === 0) {
+      req.flash('error', 'No applications currently exist');
+      res.redirect('/');
+      return;
+    }
     var completed = 0;
     applications.forEach(function(value, index) {
       Review.find({ application: value._id }, function(err, reviews) {
@@ -236,7 +250,6 @@ app.get('/admin/:id', ensureAdmin, function(req, res) {
         });
         application.reviewAverage /= reviews.length;
       }
-      console.log(application);
       res.render('adminapplication', { application: application });
     });
   });
