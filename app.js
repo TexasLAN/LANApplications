@@ -7,8 +7,7 @@ var express = require('express'),
   cookieParser = require('cookie-parser'),
   session = require('express-session'),
   swig = require('swig'),
-  mongoose = require('mongoose'),
-  Q = require('Q');
+  mongoose = require('mongoose');
 
 app.engine('html', swig.renderFile);
 app.use(express.static('public'));
