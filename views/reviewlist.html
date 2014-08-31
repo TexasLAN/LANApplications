@@ -7,6 +7,7 @@
         <tr>
           <th>Application ID</th>
           <th>Review</th>
+          <th># Reviews</th>
         </tr>
       </thead>
       <tbody>
@@ -14,6 +15,7 @@
         <tr>
           <td><a href="/review/{{ application.id }}">{{ application.id }}</a></td>
           <td>{{ application.gender }}</td>
+          <td>{{ application.reviewCount }}</td>
         </tr>
       {% endfor %}
       </tbody>

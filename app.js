@@ -7,7 +7,8 @@ var express = require('express'),
   cookieParser = require('cookie-parser'),
   session = require('express-session'),
   swig = require('swig'),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  Q = require('Q');
 
 app.engine('html', swig.renderFile);
 app.use(express.static('public'));
@@ -42,6 +43,7 @@ var Application = mongoose.model('Application', {
   lastname: String,
   gender: String,
   email: String,
+  reviewCount: Number, // used for the admin panels
   question1: String
 });
 
@@ -118,7 +120,16 @@ app.get('/login', function(req,res) {
 
 app.get('/review', ensureAuthenticated, function(req, res) {
   Application.find({}, function(err, applications) {
-    res.render('reviewlist', { applications: applications });
+    var completed = 0;
+    applications.forEach(function(value, index) {
+      Review.count({ application: value._id }, function(err, count) {
+        value.reviewCount = count;
+        completed++;
+        if (completed === applications.length) {
+          res.render('reviewlist', { applications: applications });
+        }
+      });
+    });
   });
 });
 
@@ -145,7 +156,16 @@ app.get('/review/:id', ensureAuthenticated, function(req, res) {
 
 app.get('/admin', ensureAuthenticated, function(req, res) {
   Application.find({}, function(err, applications) {
-    res.render('adminlist', { applications: applications });
+    var completed = 0;
+    applications.forEach(function(value, index) {
+      Review.count({ application: value._id }, function(err, count) {
+        value.reviewCount = count;
+        completed++;
+        if (completed === applications.length) {
+          res.render('adminlist', { applications: applications });
+        }
+      });
+    });
   });
 });
 

@@ -9,6 +9,7 @@
           <th>Name</th>
           <th>Gender</th>
           <th>Email</th>
+          <th># Reviews</th>
         </tr>
       </thead>
       <tbody>
@@ -18,6 +19,7 @@
           <td>{{ application.firstname }} {{ application.lastname }}</td>
           <td>{{ application.gender }}</td>
           <td><a href="mailto:{{ application.email }}">{{ application.email }}</a></td>
+          <td>{{ application.reviewCount }}</td>
         </tr>
       {% endfor %}
       </tbody>
