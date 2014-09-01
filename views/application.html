@@ -13,17 +13,17 @@
     <div class="alert alert-danger" role="alert">{{ error }}</div>
   {% endif %}
   <div class="well">
-    <form role="form" data-persist="garlic" action="/save" method="post">
+    <form id="application" role="form" data-persist="garlic" action="/save" method="post">
       <div class="form-group">
-        <label for="fname">First name</label>
+        <label for="fname" class="control-label">First name</label>
         <input type="text" class="form-control" id="fname" name="fname" placeholder="First name">
       </div>
       <div class="form-group">
-        <label for="lname">Last name</label>
+        <label for="lname" class="control-label">Last name</label>
         <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name">
       </div>
       <div class="form-group">
-        <label for="gender">Gender</label>
+        <label for="gender" class="control-label">Gender</label>
         <select class="form-control" id="gender" name="gender">
           <option>Male</option>
           <option>Female</option>
@@ -31,7 +31,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="year">School Year</label>
+        <label for="year" class="control-label">School Year</label>
         <select class="form-control" id="year" name="year">
           <option>1st Year</option>
           <option>2nd Year</option>
@@ -41,16 +41,17 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="email">Email address</label>
+        <label for="email" class="control-label">Email address</label>
         <input type="email" class="form-control" id="email" name="email" placeholder="Email">
       </div>
       <div class="form-group">
-        <label for="q1">Question 1</label>
+        <label for="q1" class="control-label">Question 1</label>
         <textarea class="form-control" rows="3" id="q1" name="q1"></textarea>
       </div>
       <span class="help-block">All fields are required</span>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
   </div>
+<script src="/js/application.js"></script>
 </div>
 {% endblock %}
