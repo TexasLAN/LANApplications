@@ -232,6 +232,15 @@ app.get('/review/:id', ensureAuthenticated, function(req, res) {
       EventAttendance.find({
         email: application.email
       }, function(err, attendances) {
+        if (attendances.length === 0) {
+          res.render('reviewapplication', {
+            success: req.flash('success'),
+            application: application,
+            reviews: reviews,
+            myReview: review
+          });
+          return;
+        }
         var events = [];
         var completed = 0;
         attendances.forEach(function (attendance) {
@@ -298,6 +307,10 @@ app.get('/admin/:id', ensureAdmin, function(req, res) {
       EventAttendance.find({
         email: application.email
       }, function(err, attendances) {
+        if (attendances.length === 0) {
+          res.render('adminapplication', { application: application });
+          return;
+        }
         var events = [];
         var completed = 0;
         attendances.forEach(function (attendance) {
