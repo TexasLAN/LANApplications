@@ -24,6 +24,14 @@
           <td>{{ application.reviewAverage }}</td>
         </tr>
       </table>
+      {% if events.length > 0 %}
+        <h3>Events Attended</h3>
+        <ul class="list-group">
+          {% for event in events %}
+            <li class="list-group-item">{{ events }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
       <h3>Question 1</h3>
       <p>{{ application.question1 }}</p>
     </div>

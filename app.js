@@ -51,6 +51,16 @@ var Application = mongoose.model('Application', {
   question1: String
 });
 
+var Event = mongoose.model('Event', {
+  name: String,
+  date: { type: Date, default: Date.now }
+});
+
+var EventAttendance = mongoose.model('EventAttendance', {
+  eventID: String,
+  email: String
+});
+
 var Review = mongoose.model('Review', {
   reviewer: String,
   reviewerName: String,
@@ -90,6 +100,19 @@ app.post('/save', function(req, res) {
   });
   req.flash('success', 'Application Submitted Successfully!');
   res.redirect('/');
+});
+
+app.post('/event/:id', function(req, res) {
+  var attendance = EventAttendance({
+    eventID: req.params.id,
+    email: req.body.email
+  });
+  attendance.save(function(err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+  res.redirect('/event/' + req.params.id);
 });
 
 app.post('/review/:id/save', ensureAuthenticated, function(req, res) {
@@ -146,6 +169,17 @@ app.get('/', function(req, res) {
   });
 });
 
+app.get('/event/:id', function(req, res) {
+  Event.findOne({ _id: req.params.id }, function(err, event) {
+    if (!event) {
+      req.flash('error', 'Event does not exist');
+      res.redirect('/');
+      return;
+    }
+    res.render('event', { event: event });
+  });
+});
+
 app.get('/login', function(req,res) {
   if (req.session.reviewer) {
     res.redirect('/review');
@@ -195,11 +229,26 @@ app.get('/review/:id', ensureAuthenticated, function(req, res) {
           return true;
         }
       });
-      res.render('reviewapplication', { 
-        success: req.flash('success'),
-        application: application,
-        reviews: reviews,
-        myReview: review
+      EventAttendance.find({
+        email: application.email
+      }, function(err, attendances) {
+        var events = [];
+        var completed = 0;
+        attendances.forEach(function (attendance) {
+          Event.findOne({ _id: attendance.eventID }, function(err, event) {
+            events.push(event.name);
+            completed++;
+            if (completed === attendances.length) {
+              res.render('reviewapplication', { 
+                success: req.flash('success'),
+                application: application,
+                events: events,
+                reviews: reviews,
+                myReview: review
+              });    
+            }
+          });
+        });
       });
     });
   });
@@ -246,7 +295,24 @@ app.get('/admin/:id', ensureAdmin, function(req, res) {
         });
         application.reviewAverage /= reviews.length;
       }
-      res.render('adminapplication', { application: application });
+      EventAttendance.find({
+        email: application.email
+      }, function(err, attendances) {
+        var events = [];
+        var completed = 0;
+        attendances.forEach(function (attendance) {
+          Event.findOne({ _id: attendance.eventID }, function(err, event) {
+            events.push(event.name);
+            completed++;
+            if (completed === attendances.length) {
+              res.render('adminapplication', { 
+                application: application,
+                events: events
+              });
+            }
+          });
+        });
+      });
     });
   });
 });
