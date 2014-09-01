@@ -11,5 +11,11 @@ $("#application").submit(function( event ) {
   if(!valid) {
     alert("All form fields are required for submission");
     event.preventDefault();
+  } else {
+    elems.forEach(function(elem) {
+      elem.garlic('destroy');
+    });
+    $("#gender").garlic('destroy');
+    $("#year").garlic('destroy');
   }
 });

@@ -13,7 +13,7 @@
     <div class="alert alert-danger" role="alert">{{ error }}</div>
   {% endif %}
   <div class="well">
-    <form id="application" role="form" data-persist="garlic" action="/save" method="post">
+    <form id="application" role="form" data-persist="garlic" data-destroy="false" action="/save" method="post">
       <div class="form-group">
         <label for="fname" class="control-label">First name</label>
         <input type="text" class="form-control" id="fname" name="fname" placeholder="First name">
