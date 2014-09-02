@@ -48,7 +48,12 @@ var Application = mongoose.model('Application', {
   reviewCount: Number, // used for the admin panels
   reviewerIsMe: Boolean, // used for the admin panels
   reviewAverage: Number, // used for the admin panels
-  question1: String
+  question1: String,
+  question2: String,
+  question3: String,
+  question4: String,
+  question5: String,
+  question6: String
 });
 
 var Event = mongoose.model('Event', {
@@ -77,7 +82,9 @@ var Reviewer = mongoose.model('Reviewer', {
 /* ===== ROUTES ===== */
 app.post('/save', function(req, res) {
   if (!req.body.fname || !req.body.lname || !req.body.gender ||
-      !req.body.email || !req.body.year || !req.body.q1) {
+      !req.body.email || !req.body.year || !req.body.q1 ||
+      !req.body.q2 || !req.body.q3 || !req.body.q4 || 
+      !req.body.q5 || !req.body.q6) {
     req.flash('error', 'A required field was missing');
     res.redirect('/');
     return;
@@ -88,7 +95,12 @@ app.post('/save', function(req, res) {
     gender: req.body.gender,
     email: req.body.email,
     year: req.body.year,
-    question1: req.body.q1
+    question1: req.body.q1,
+    question2: req.body.q2,
+    question3: req.body.q3,
+    question4: req.body.q4,
+    question5: req.body.q5,
+    question6: req.body.q6
   });
   application.save(function (err) {
     if (err) {
