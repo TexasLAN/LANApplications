@@ -118,9 +118,13 @@ app.post('/save', function(req, res) {
 });
 
 app.post('/event/:id', function(req, res) {
+  if (!req.body.email) {
+    res.redirect('/event/' + req.params.id);
+    return;
+  }
   var attendance = EventAttendance({
     eventID: req.params.id,
-    email: req.body.email
+    email: req.body.email.toLowerCase()
   });
   attendance.save(function(err) {
     if (err) {
@@ -269,7 +273,7 @@ app.get('/review/:id', ensureAuthenticated, function(req, res) {
         }
       });
       EventAttendance.find({
-        email: application.email
+        email: application.email.toLowerCase()
       }, function(err, attendances) {
         if (attendances.length === 0) {
           res.render('reviewapplication', {
