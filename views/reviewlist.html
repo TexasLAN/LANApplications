@@ -2,18 +2,19 @@
 
 {% block content %}
 <div class="container panel panel-default">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Application ID</th>
-          <th>Gender</th>
-          <th>Year</th>
-          <th># Reviews</th>
-          <th>Reviewed</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for application in applications %}
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Application ID</th>
+        <th>Gender</th>
+        <th>Year</th>
+        <th># Reviews</th>
+        <th>Reviewed</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for application in applications %}
+      {% if !application.rejected %}
         <tr>
           <td><a href="/review/{{ application.id }}">{{ application.id }}</a></td>
           <td>{{ application.gender }}</td>
@@ -25,8 +26,40 @@
             <td><span class="glyphicon glyphicon-remove" /></td>
           {% endif %}
         </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+      {% endif %}
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="container panel panel-default">
+  <h3>Rejected Applications</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Application ID</th>
+        <th>Gender</th>
+        <th>Year</th>
+        <th># Reviews</th>
+        <th>Reviewed</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for application in applications %}
+      {% if application.rejected %}
+        <tr>
+          <td><a href="/review/{{ application.id }}">{{ application.id }}</a></td>
+          <td>{{ application.gender }}</td>
+          <td>{{ application.year }}</td>
+          <td>{{ application.reviewCount }}</td>
+          {% if application.reviewerIsMe %}
+            <td><span class="glyphicon glyphicon-ok" /></td>
+          {% else %}
+            <td><span class="glyphicon glyphicon-remove" /></td>
+          {% endif %}
+        </tr>
+      {% endif %}
+    {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}

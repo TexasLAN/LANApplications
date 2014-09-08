@@ -54,7 +54,8 @@ var Application = mongoose.model('Application', {
   question4: String,
   question5: String,
   question6: String,
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
+  rejected: Boolean
 });
 
 var Event = mongoose.model('Event', {
@@ -101,7 +102,8 @@ app.post('/save', function(req, res) {
     question3: req.body.q3,
     question4: req.body.q4,
     question5: req.body.q5,
-    question6: req.body.q6
+    question6: req.body.q6,
+    rejected: false
   });
   application.save(function (err) {
     if (err) {
@@ -158,6 +160,30 @@ app.post('/login', function(req, res) {
       res.redirect('/login');
     }
   });
+});
+
+app.post('/review/:id/reject', ensureAdmin, function(req, res) {
+  Application.update({
+    _id: req.params.id
+  }, {
+    rejected: true
+  }, function(err) {
+    if (err)
+      console.log(err);
+  });
+  res.end('{"success" : "Rejected Successfully", "status" : 200}');
+});
+
+app.post('/review/:id/unreject', ensureAdmin, function(req, res) {
+  Application.update({
+    _id: req.params.id
+  }, {
+    rejected: false
+  }, function(err) {
+    if (err)
+      console.log(err);
+  });
+  res.end('{"success" : "Unrejected Successfully", "status" : 200}');
 });
 
 app.delete('/:id', ensureAdmin, function(req, res) {

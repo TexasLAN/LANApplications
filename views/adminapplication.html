@@ -5,7 +5,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h1>{{ application.firstname }} {{ application.lastname }}</h1>
-      
+      {% if application.rejected %}<h3><span class="label label-danger">Rejected</span></h3>{% endif %}
     </div>
     <div class="panel-body">
       <table class="table">
@@ -46,6 +46,15 @@
       <p>{{ application.question6 }}</p>
     </div>
     <div class="panel-footer">
+      {% if !application.rejected %}
+      <button type="submit" class="btn btn-primary" onClick="rejectPost('{{ application.id }}')">
+        Reject Application
+      </button>
+      {% else %}
+      <button type="submit" class="btn btn-success" onClick="unrejectPost('{{ application.id }}')">
+        Unreject Application
+      </button>
+      {% endif %}
       <button type="submit" class="btn btn-danger" onClick="deletePost('{{ application.id }}')">
         DELETE APPLICATION
       </button>
