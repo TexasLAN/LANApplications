@@ -53,7 +53,8 @@ var Application = mongoose.model('Application', {
   question3: String,
   question4: String,
   question5: String,
-  question6: String
+  question6: String,
+  date: { type: Date, default: Date.now }
 });
 
 var Event = mongoose.model('Event', {
