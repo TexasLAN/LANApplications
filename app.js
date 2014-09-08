@@ -65,6 +65,7 @@ var Event = mongoose.model('Event', {
 
 var EventAttendance = mongoose.model('EventAttendance', {
   eventID: String,
+  name: String,
   email: String
 });
 
@@ -118,12 +119,13 @@ app.post('/save', function(req, res) {
 });
 
 app.post('/event/:id', function(req, res) {
-  if (!req.body.email) {
+  if (!req.body.email || !req.body.name) {
     res.redirect('/event/' + req.params.id);
     return;
   }
   var attendance = EventAttendance({
     eventID: req.params.id,
+    name: req.body.name,
     email: req.body.email.toLowerCase()
   });
   attendance.save(function(err) {
