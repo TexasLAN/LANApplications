@@ -22,7 +22,7 @@
         <h3>Events Attended</h3>
         <ul class="list-group">
         {% for event in events %}
-          <li class="list-group-item">{{ events }}</li>
+          <li class="list-group-item">{{ event }}</li>
         {% endfor %}
         </ul>
       {% endif %}
@@ -62,27 +62,27 @@
           <div class="radio">
             <label>
               <input type="radio" name="weight" value="1" {% if myReview.weight ==  1 %} checked {% endif %}> Strong Reject
-            </label> 
+            </label>
           </div>
           <div class="radio">
             <label>
               <input type="radio" name="weight" value="2" {% if myReview.weight ==  2 %} checked {% endif %}> Weak Reject
-            </label> 
+            </label>
           </div>
           <div class="radio">
             <label>
               <input type="radio" name="weight" value="3" {% if myReview.weight ==  3 %} checked {% endif %}> Neutral
-            </label> 
+            </label>
           </div>
           <div class="radio">
             <label>
               <input type="radio" name="weight" value="4" {% if myReview.weight ==  4 %} checked {% endif %}> Weak Recruit
-            </label> 
+            </label>
           </div>
           <div class="radio">
             <label>
               <input type="radio" name="weight" value="5" {% if myReview.weight ==  5 %} checked {% endif %}> Strong Recruit
-            </label> 
+            </label>
           </div>
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
