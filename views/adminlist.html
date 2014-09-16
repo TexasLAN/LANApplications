@@ -24,7 +24,7 @@
           <td><a href="mailto:{{ application.email }}">{{ application.email }}</a></td>
           <td>{{ application.year }}</td>
           <td>{{ application.reviewCount }}</td>
-          <td>{{ application.reviewAverage }}</td>
+          <td>{{ application.reviewAverage.toFixed(2) }}</td>
         </tr>
       {% endif %}
     {% endfor %}

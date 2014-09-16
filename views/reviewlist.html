@@ -26,7 +26,7 @@
           {% else %}
             <td><span class="glyphicon glyphicon-remove" /></td>
           {% endif %}
-          <td>{{ application.reviewAverage }}</td>
+          <td>{{ application.reviewAverage.toFixed(2) }}</td>
         </tr>
       {% endif %}
     {% endfor %}
