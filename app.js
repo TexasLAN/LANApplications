@@ -83,6 +83,7 @@ var Reviewer = mongoose.model('Reviewer', {
 });
 
 /* ===== ROUTES ===== */
+/*
 app.post('/save', function(req, res) {
   if (!req.body.fname || !req.body.lname || !req.body.gender ||
       !req.body.email || !req.body.year || !req.body.q1 ||
@@ -115,6 +116,12 @@ app.post('/save', function(req, res) {
     }
   });
   req.flash('success', 'Application Submitted Successfully!');
+  res.redirect('/');
+});
+*/
+
+app.post('/save', function(req, res) {
+  req.flash('error', 'Applications are closed!');
   res.redirect('/');
 });
 
