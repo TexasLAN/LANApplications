@@ -244,12 +244,15 @@ app.get('/review', ensureAuthenticated, function(req, res) {
     applications.forEach(function(value, index) {
       Review.find({ application: value._id }, function(err, reviews) {
         value.reviewCount = reviews.length;
+        value.reviewAverage = 0;
         completed++;
         reviews.forEach(function(review) {
+          value.reviewAverage += review.weight;
           if (review.reviewer === req.session.reviewer._id) {
             value.reviewerIsMe = true;
           }
         });
+        value.reviewAverage /= reviews.length;
         if (completed === applications.length) {
           res.render('reviewlist', { applications: applications });
         }
