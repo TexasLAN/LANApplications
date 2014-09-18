@@ -175,6 +175,12 @@ app.post('/login', function(req, res) {
   });
 });
 
+/*
+
+I suck at infrastructure so this is a work-around so nobody un-rejects or
+rejects an application they're not supposed to.
+http://goo.gl/K3wJ0z
+
 app.post('/review/:id/reject', ensureAdmin, function(req, res) {
   Application.update({
     _id: req.params.id
@@ -212,6 +218,7 @@ app.delete('/:id', ensureAdmin, function(req, res) {
   });
   res.end('{"success" : "Deleted Successfully", "status" : 200}');
 });
+*/
 
 /* ===== VIEWS ===== */
 app.get('/', function(req, res) {
