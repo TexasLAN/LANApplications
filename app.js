@@ -83,11 +83,11 @@ var Reviewer = mongoose.model('Reviewer', {
 });
 
 /* ===== ROUTES ===== */
-/*
+
 app.post('/save', function(req, res) {
   if (!req.body.fname || !req.body.lname || !req.body.gender ||
       !req.body.email || !req.body.year || !req.body.q1 ||
-      !req.body.q2 || !req.body.q3 || !req.body.q4 || 
+      !req.body.q2 || !req.body.q3 || !req.body.q4 ||
       !req.body.q5 || !req.body.q6) {
     req.flash('error', 'A required field was missing');
     res.redirect('/');
@@ -116,12 +116,6 @@ app.post('/save', function(req, res) {
     }
   });
   req.flash('success', 'Application Submitted Successfully!');
-  res.redirect('/');
-});
-*/
-
-app.post('/save', function(req, res) {
-  req.flash('error', 'Applications are closed!');
   res.redirect('/');
 });
 
@@ -175,12 +169,6 @@ app.post('/login', function(req, res) {
   });
 });
 
-/*
-
-I suck at infrastructure so this is a work-around so nobody un-rejects or
-rejects an application they're not supposed to.
-http://goo.gl/K3wJ0z
-
 app.post('/review/:id/reject', ensureAdmin, function(req, res) {
   Application.update({
     _id: req.params.id
@@ -218,7 +206,6 @@ app.delete('/:id', ensureAdmin, function(req, res) {
   });
   res.end('{"success" : "Deleted Successfully", "status" : 200}');
 });
-*/
 
 /* ===== VIEWS ===== */
 app.get('/', function(req, res) {
@@ -310,13 +297,13 @@ app.get('/review/:id', ensureAuthenticated, function(req, res) {
             events.push(event.name);
             completed++;
             if (completed === attendances.length) {
-              res.render('reviewapplication', { 
+              res.render('reviewapplication', {
                 success: req.flash('success'),
                 application: application,
                 events: events,
                 reviews: reviews,
                 myReview: review
-              });    
+              });
             }
           });
         });
@@ -342,7 +329,7 @@ app.get('/admin', ensureAdmin, function(req, res) {
             value.reviewAverage += review.weight;
           });
           value.reviewAverage /= reviews.length;
-        } 
+        }
         completed++;
         if (completed === applications.length) {
           res.render('adminlist', { applications: applications });
@@ -380,7 +367,7 @@ app.get('/admin/:id', ensureAdmin, function(req, res) {
             events.push(event.name);
             completed++;
             if (completed === attendances.length) {
-              res.render('adminapplication', { 
+              res.render('adminapplication', {
                 application: application,
                 events: events
               });
@@ -394,7 +381,7 @@ app.get('/admin/:id', ensureAdmin, function(req, res) {
 
 /* ===== HELPER FUNCTIONS ===== */
 function ensureAuthenticated(req, res, next) {
-  if (!req.session.reviewer) { 
+  if (!req.session.reviewer) {
     req.session.next = req.url;
     res.redirect('/login');
   } else {
